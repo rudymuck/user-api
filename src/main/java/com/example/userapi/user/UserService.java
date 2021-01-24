@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class UserService {
+class UserService {
 
     private static final String USERS = "/users";
 
@@ -23,14 +23,14 @@ public class UserService {
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
 
-    public UserService(@Value("${github.api.path}") String baseUrl, RestTemplate restTemplate, UserRepository userRepository) {
+    UserService(@Value("${github.api.path}") String baseUrl, RestTemplate restTemplate, UserRepository userRepository) {
         this.baseUrl = baseUrl;
         this.restTemplate = restTemplate;
         this.userRepository = userRepository;
     }
 
 
-    public UserDto findByLogin(String login) {
+    UserDto findByLogin(String login) {
         ResponseUserDto responseUserDto = fetchDataFromApi(login);
         BigDecimal calculations = calculate(responseUserDto);
         storeServiceRequestData(login);
@@ -72,7 +72,7 @@ public class UserService {
         }
     }
 
-    ResponseUserDto fetchDataFromApi(String login) {
+    private ResponseUserDto fetchDataFromApi(String login) {
         Map<String, Object> urlParams = Map.of("login", login);
         String url = UriComponentsBuilder.fromHttpUrl(baseUrl).path(USERS + "/{login}").buildAndExpand(urlParams).toUriString();
         try {
